@@ -1,9 +1,67 @@
+%% 
+%% Copyright 2007-2026 Elsevier Ltd
+%% 
+%% This file is part of the 'Elsarticle Bundle'.
+%% ---------------------------------------------
+%% 
+%% It may be distributed under the conditions of the LaTeX Project Public
+%% License, either version 1.3 of this license or (at your option) any
+%% later version.  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 1999/12/01 or later.
+%% 
+%% The list of all files belonging to the 'Elsarticle Bundle' is
+%% given in the file `manifest.txt'.
+%% 
+%% Template article for Elsevier's document class `elsarticle'
+%% with numbered style bibliographic references
+%% SP 2008/03/01
+%% $Id: elsarticle-template-num.tex 289 2026-01-09 06:13:01Z rishi $
+%%
 \documentclass[preprint,12pt]{elsarticle}
+
+% Packages
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Journal
+\journal{European Journal of Operational Research}
 
 \begin{document}
 
-\section{Introduction}
+\begin{frontmatter}
 
-This is a test of the EJOR LaTeX setup.
+\title{Title of the Paper}
+
+\author{Stefan Pilot}
+\affiliation{
+    organization={RWTH Aachen University},
+    addressline={},
+    city={Aachen},
+    postcode={},
+    country={Germany}
+}
+
+\begin{abstract}
+Abstract placeholder.
+\end{abstract}
+
+\begin{keyword}
+pickup and delivery problem \sep
+vehicle routing \sep
+time windows \sep
+single destination
+\end{keyword}
+
+\end{frontmatter}
+
+
+\section{Literature List}
+
+
+
+\bibliographystyle{elsarticle-num}
+\bibliography{references}
 
 \end{document}
