@@ -14,7 +14,7 @@
 %% The list of all files belonging to the 'Elsarticle Bundle' is
 %% given in the file `manifest.txt'.
 %% 
-%% Template article for Elsevier's document class `elsarticle'
+%% Template article for Elsevier's document class `elsarticle`
 %% with numbered style bibliographic references
 %% SP 2008/03/01
 %% $Id: elsarticle-template-num.tex 289 2026-01-09 06:13:01Z rishi $
@@ -34,7 +34,7 @@
 
 \title{Title of the Paper}
 
-\author{Stefan Pilot}
+\author{Author Name}
 \affiliation{
     organization={RWTH Aachen University},
     addressline={},
@@ -59,6 +59,102 @@ single destination
 
 \section{Literature List}
 
+
+\paragraph{Dumas, Desrosiers, and Soumis (1991) -- The Pickup and Delivery Problem with Time Windows}
+
+
+Dumas et al.~\cite{dumasPickupDeliveryProblem1991} study the pickup and
+delivery problem with time windows (PDPTW). Unlike the PDPTW variant we study,
+the standard PDPTW allows vehicles to serve requests with arbitrary pickup and delivery locations,
+rather than restricting all requests currently on-board to share a common physical destination.
+
+The paper's main contribution is the first exact solution algorithm for
+the PDPTW: a set-partitioning formulation whose LP relaxation is solved
+by column generation, with columns priced by a constrained shortest-path
+subproblem and a branch-and-bound tree used to resolve fractional
+solutions by branching on pickup sequences.
+
+
+\paragraph{Savelsbergh and Sol (1995) -- The General Pickup and Delivery Problem}
+
+
+Savelsbergh and Sol~\cite{savelsberghGeneralPickupDelivery1995} study the
+general pickup and delivery problem (PDP). The difference to the standard PDPTW
+is that the PDP does not include time windows (and unlike 1D-PDPTW, no single-destination requirement).
+
+Their main contribution is definitional and survey-oriented rather than algorithmic:
+they formalize the PDPTW problem definition and catalogue the variety of objective functions used
+in the literature (e.g., minimizing fleet size, total travel cost, total
+duration, or combinations thereof), which we draw on directly when
+positioning our own cost-minimization objective.
+
+
+\paragraph{Diana and Dessouky (2004) -- A New Regret Insertion Heuristic for Solving Large-Scale Dial-a-Ride Problems with Time Windows}
+
+
+Diana and Dessouky~\cite{dianaNewRegretInsertion2004} study a large-scale
+dial-a-ride problem with time windows (DARPTW). This is a passenger-transport
+variant of the PDPTW that adds ride-time constraints our 1D-PDPTW does not impose.
+
+Their main contribution is a parallel regret insertion heuristic for the
+DARP. A regret-based insertion heuristic is a construction heuristic that
+iteratively inserts requests into a partial solution in order of their regret value,
+which is the difference in cost between the best and second-best feasible insertion positions
+for that request.
+
+
+\paragraph{Cordeau (2006) -- A Branch-and-Cut Algorithm for the Dial-a-Ride Problem}
+
+
+Cordeau~\cite{cordeauBranchandCutAlgorithmDialaRide2006} studies the
+dial-a-ride problem and develops a branch-and-cut algorithm.
+
+
+
+\paragraph{Ropke, Cordeau, and Laporte (2007) -- Models and Branch-and-Cut Algorithms for Pickup and Delivery Problems with Time Windows}
+
+
+Ropke et al.~\cite{ropkeModelsBranchandcutAlgorithms2007} study the
+pickup and delivery problem with time windows and the closely related
+dial-a-ride problem.
+
+
+\paragraph{Ropke and Cordeau (2009) -- Branch and Cut and Price for the Pickup and Delivery Problem with Time Windows}
+
+
+Ropke and Cordeau~\cite{ropkeBranchCutPrice2009} study the pickup and
+delivery problem with time windows.
+
+
+\paragraph{Ghilas, Demir, and Van Woensel (2016) -- The Pickup and Delivery Problem with Time Windows and Scheduled Lines}
+
+
+Ghilas et al.~\cite{ghilasPickupDeliveryProblem2016} study a variant of
+the pickup and delivery problem with time windows in which scheduled
+public transportation services can be used.
+
+
+\paragraph{Gschwind, Irnich, Rothenbächer, and Tilk (2018) -- Bidirectional Labeling in Column-Generation Algorithms for Pickup-and-Delivery Problems}
+
+
+Gschwind et al.~\cite{gschwindBidirectionalLabelingColumngeneration2018}
+study acceleration techniques for column-generation algorithms for
+pickup-and-delivery problems.
+
+
+\paragraph{Potvin and Rousseau (1993) -- A Parallel Route Building Algorithm for the Vehicle Routing and Scheduling Problem with Time Windows}
+
+
+Potvin and Rousseau~\cite{potvinParallelRouteBuilding1993} study the
+vehicle routing and scheduling problem with time windows.
+
+
+\paragraph{Shaw (1998) -- Using Constraint Programming and Local Search Methods to Solve Vehicle Routing Problems}
+
+
+Shaw~\cite{shawUsingConstraintProgramming1998} studies the application of
+constraint programming and large-neighborhood search methods to vehicle
+routing problems.
 
 
 \bibliographystyle{elsarticle-num}
