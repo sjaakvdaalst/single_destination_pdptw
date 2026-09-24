@@ -41,6 +41,9 @@
 \usepackage{hyperref}
 \usepackage[margin=1in]{geometry}
 \usepackage[utf8]{inputenc}
+\usepackage{pdflscape}
+\usepackage{tabularx}
+\usepackage{caption}
 \usepackage{setspace}
 \onehalfspacing
 
@@ -143,9 +146,96 @@ Abstract text.
 %% Use \section commands to start a section
 \section{Literature Review}
 
-\paragraph{Dumas, Desrosiers, and Soumis (1991) -- The Pickup and Delivery Problem with Time Windows}
+\paragraph{\textbf{The Robust Pickup and Delivery Problem with Time Windows}}
 
-Dumas et al.~\citet{dumasPickupDeliveryProblem1991} study the pickup and
+\citet{abreuRobustPickupDelivery2026} study the robust pickup and delivery
+problem with time windows (RPDPTW), which handles demand and travel time uncertainty via robust
+optimization rather than being assumed away, and propose both a compact robust counterpart formulation and a branch-and-cut algorithm.
+
+The main contribution of the paper is to introduce the robust PDPTW to the literature.
+It shows how PDPTW can be extended to handled uncertainty.
+
+
+\paragraph{\textbf{An Exact Algorithm for the Pickup and Delivery Problem with Time Windows and Last-in-First-out Loading}}
+
+\citet{alyasiryExactAlgorithmPickup2019} study the PDPTW with last-in-first-out loading constraints. 
+Their main contribution is to propose a new exact method to solve PDPTWs, including the PDPTWL. Their solution method is based on 
+fragments, which are series of pickup and delivery requests starting and ending with an empty vehicle. They use such fragments to 
+create a relaxed network flow model with side constraints.
+
+This paper is relevant for two reasons: it studies a PDPTW variant with LIFO, that is, a specific loading constraint, adjacent to our 
+loading constraint (First In, All Out), and the solution method is somehwat interesting because their "fragments" are a similar concept to our 
+delivery batches (sequence of pickup and delivery events starting and ending with an empty vehicle).
+
+
+\paragraph{\textbf{An Exact Algorithm for the Pickup and Delivery Problem with Time Windows}}
+
+\citet{baldacciExactAlgorithmPickup2011} study the standard PDPTW and develop a new exact algorithm based on set-partitioning formulation. 
+They showcase a bounding procedure that finds near-optimal dual solutions to the linear relaxation, incorporating two dual ascent heuristics and cut-and-column 
+generation procedure. The final dual solution is used to generate a reduced master problem, which is solved either by an integer programming solver or a branch-and-price algorithm, depending on size.
+
+Their main contribution is the development of a new exact PDPTW algorithm that outperforms existing exact algorithms.
+
+\paragraph{\textbf{The Pickup and Delivery Problem with Time Windows and Scheduling on the Edges}}
+
+\citet{barbosaPickupDeliveryProblem2026} study the pickup and delivery problem with time windows
+and scheduling on the edges (PDPTW-SE), which extends the PDPTW by allowing pickup and delivery
+nodes to be located in different regions inaccessible to regular vehicles. 
+For such requests, the vehicle must be transported across a special edge by a separate machine (e.g., ferry, elevator), and since only a limited number of machines are available, 
+their use must be scheduled subject to time windows.
+
+Their main contribution is to introduce the PDPTW-SE to the literature, which has applications
+in settings such as the logistical planning of pickups and deliveries on multiple islands or AGV-based pickup-and-delivery planning in multi-floor buildings such as hotels or hospitals.
+
+
+\paragraph{\textbf{Static Pickup and Delivery Problems: A Classification Scheme and Survey}}
+
+\citet{berbegliaStaticPickupDelivery2007} introduce a general modeling framework and three-field classification scheme
+covering the broad family of static PDPs, and suvey the solution methods applied to each class.
+
+Their taxonomy (one-to-one, one-to-many-to-one, many-to-many) is standard and can be used to situate our specific model relative to existing problem classes.
+
+
+\paragraph{\textbf{A branch-and-price algorithm for the multi-depot heterogeneous-fleet pickup and delivery problem with soft time windows}}
+
+\citet{bettinelliBranchandpriceAlgorithmMultidepot2014} study a PDPTW variant that addresses multiple depots, heteregenous fleets, and flexible preference handling simultaneously. This variant arises from 
+growing needs and demands logistics managements need to fulfill. Their solution method is a branch-and-price algorithm.
+
+This paper is relevant for two reasons: first, it addresses a multi-depot PDPTW variant, which is a deviation from the classic single-depot feature of the PDPTW, and our model does something similar (remove depots all together). 
+Second, it uses a branch-and-price algorithm to solve this problem, which matches our solution method.
+
+
+\paragraph{\textbf{Branch-Price-and-Cut Algorithms for the Pickup and Delivery Problem with Time Windows and Last-in-First-Out Loading}}
+
+\citet{cherkeslyBranchPriceandCutAlgorithmsPickup2015} study the PDPTWL (PDPTW with Last-In-First-Out loading constraints), the first paper to develop an exact method to this problem variant. 
+They propose three BCP algorithms, one in which the LIFO constraints are incorporated into the master problem, one in which they are included in the pricing problem, and a hyrbid.
+
+Mainly the introduction of LIFO constraints to the PDPTW is an interesting contribution relevant to our model.
+
+
+\paragraph{\textbf{A Branch-and-Cut Algorithm for the Dial-a-Ride Problem}}
+
+\citet{cordeauBranchandCutAlgorithmDialaRide2006} study the DARP, in which vehicles must transport passengers between pickup and delivery locations,
+subject to time windows and maximum ride-time constraints. The DARP is a fairly widely studied PDPTW variant.
+
+Their contribution is a branch-and-cut algorithm for the DARP, which incorporates known and new valid inequalities.
+
+
+\paragraph{\textbf{A New Regret Insertion Heuristic for Solving Large-Scale Dial-a-Ride Problems with Time Windows}}
+
+\citet{dianaNewRegretInsertion2004} study a large-scale
+dial-a-ride problem with time windows (DARPTW).
+
+Their main contribution is a parallel regret insertion heuristic for the
+DARP. A regret-based insertion heuristic is a construction heuristic that
+iteratively inserts requests into a partial solution in order of their regret
+value, which is the difference in cost between the best and second-best
+feasible insertion positions for that request.
+
+
+\paragraph{\textbf{The Pickup and Delivery Problem with Time Windows}}
+
+\citet{dumasPickupDeliveryProblem1991} study the pickup and
 delivery problem with time windows (PDPTW). Unlike the PDPTW variant we study,
 the standard PDPTW allows vehicles to serve requests with arbitrary pickup and
 delivery locations, rather than restricting all requests currently on-board to
@@ -158,9 +248,80 @@ subproblem and a branch-and-bound tree used to resolve fractional
 solutions by branching on pickup sequences.
 
 
-\paragraph{Savelsbergh and Sol (1995) -- The General Pickup and Delivery Problem}
+\paragraph{\textbf{Pickup and Delivery Problem with Time Windows: A New Compact Two-Index Formulation}}
 
-Savelsbergh and Sol~\citet{savelsberghGeneralPickupDelivery1995} study the
+\citet{furtadoPickupDeliveryProblem2017} study the standard PDPTW and propose a new compact two-index formulation.
+
+Their main contribution is the implementation of a new modeling strategy that allows the assignment of vehicles
+to routes explicitly in two-index flow formulations. It has a higher performance relative to classical compact three-index formulations.
+
+
+\paragraph{\textbf{Branch-and-Price for the Pickup and Delivery Problem with Time Windows and Scheduled Lines}}
+
+\citet{ghilasBranchandPricePickupDelivery2018} propose a branch-and-price algorithm for the PDPTW-SL, a variant they previously introduced. The PDPTW-SL integrates freight flows 
+with scheduled public transportation services. Vehicles are allowed to use scheduled public transportation lines 
+to perform pickups and deliveries, which can reduce costs and improve service levels.
+
+
+The main relevant contribution of this paper is a semi-recent application of a branch-and-price framework for a PDPTW variant. Additionally, 
+the PDPTW-SL is somewhat relevant to us as another example of a restricted PDPTW variant in which the freedom to route between arbitrary origins and 
+destinations is restricted by a structural constraint (fixed public-transport schedules). 
+
+
+\paragraph{\textbf{Bidirectional Labeling in Column-Generation Algorithms for Pickup-and-Delivery Problems}}
+
+\citet{gschwindBidirectionalLabelingColumngeneration2018} study the PDPTW, in particular within the context of branch-cut-and-price frameworks, 
+and build upon the work of \citet{ropkeBranchCutPrice2009} to develop a bidirectional labeling algorithm for the pricing subproblem.
+Specifically, strong dominance is applied in both forward and backward directions simultaneously, which allows for a more efficient exploration of the search space.
+They demonstrate that this bidirectional strategy reduces the pricing time compared to forward labeling.
+
+Their main contribution is the theoretical development of a bidirectional labeling algorithm and the empirical demonstration of 
+its effectiveness in pricing time reduction for the PDPTW.
+
+
+\paragraph{\textbf{A Fast Decomposition and Reconstruction Framework for the Pickup and Delivery Problem With Time Windows and LIFO Loading}}
+
+\citet{liuFastDecompositionReconstruction2019} study the PDPTWL, a PDPTW variant incorporating LIFO loading. Their main contribution is to apply a Decomposition and Reconstruction algorithm coupled with a
+tabu search to the PDPTWL, finding new BKS to many Li \& Lim instances for this specific variant.
+
+
+\paragraph{\textbf{The pickup and delivery problem with transshipments: Critical review of two existing models and a new formulation}}
+
+\citet{lyuPickupDeliveryProblem2023} study the PDP-T and PDPTW-T, which are extensions from the standard PDPTW to include transshipments, 
+where requests can be transfered between vehicles at desginated transfer stations.
+
+The paper's main contribution is to provide review and revision of the two existing state-of-the-art models for the PDP-T and PDPTW-T, 
+while also developing a new mixed-integer programming formulation for these variants, which has better computational performance.
+
+
+\paragraph{\textbf{An Adaptive Large Neighborhood Search Heuristic for the Pickup and Delivery Problem with Time Windows}}
+
+\citet{ropkeAdaptiveLargeNeighborhood2006} study the PDPTW and extend Shaw's large neighborhood search (LNS) heuristic. 
+Their main contribution is the development of an adaptive LNS heuristic that dynamically adjusts the selection of removal and insertion operators based on their past performance, 
+which allows for a more effective exploration of the solution space and improved solution quality. Their repair operators include basic greedy heuristics as well as regret heurstics. 
+
+
+\paragraph{\textbf{Branch and Cut and Price for the Pickup and Delivery Problem with Time Windows}}
+
+\citet{ropkeBranchCutPrice2009} study the PDPTW and develop a BCP algorithm. Their main contribution is the introduction of valid inequalities in the formulation 
+to improve lower bound quality. Another contribution is that they showcased how previously proposed inequalities for the PDPTW are implied by the set partitioning formulation.
+
+
+\paragraph{\textbf{Models and Branch-and-Cut Algorithms for Pickup and Delivery Problems with Time Windows}}
+
+\citet{ropkeModelsBranchandcutAlgorithms2007} study both the standard PDPTW and the DARP. They propose two new formulations 
+for the PDPTW using branch-and-cut algorithms, and also introduce new valid inequalities.
+
+
+\paragraph{\textbf{A Study on the Pickup and Delivery Problem with Time Windows: Matheuristics and New Instances}}
+
+\citet{sartoriStudyPickupDelivery2020} study the standard PDPTW and propose a new matheuristic approach. Their main contribution, aside from the integration of their mathematical programming component, is the creation of extensive 
+new routing benchmark instances based on real-world data. In our research, we use a modified version of their benchmark instances.
+
+
+\paragraph{\textbf{The General Pickup and Delivery Problem}}
+
+\citet{savelsberghGeneralPickupDelivery1995} study the
 general pickup and delivery problem (PDP). The difference to the standard PDPTW
 is that the PDP does not include time windows (and unlike 1D-PDPTW, no
 single-destination requirement).
@@ -172,59 +333,126 @@ size, total travel cost, total duration, or combinations thereof), which we
 draw on directly when positioning our own cost-minimization objective.
 
 
-\paragraph{Diana and Dessouky (2004) -- A New Regret Insertion Heuristic for Solving Large-Scale Dial-a-Ride Problems with Time Windows}
+\section{State Transitions Overview}
 
-Diana and Dessouky~\citet{dianaNewRegretInsertion2004} study a large-scale
-dial-a-ride problem with time windows (DARPTW). This is a passenger-transport
-variant of the PDPTW that adds ride-time constraints our 1D-PDPTW does not
-impose. 
+\begin{landscape}
+\vspace*{\fill}
+\noindent
+\begin{minipage}{\linewidth}
+\centering
+\small
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{5pt}
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.1cm}|
+                                >{\raggedright\arraybackslash}X|
+                                >{\raggedright\arraybackslash}X|
+                                >{\raggedright\arraybackslash}X|
+                                >{\raggedright\arraybackslash}X|
+                                >{\raggedright\arraybackslash}X|}
+\hline
+\textbf{State attribute} &
+\textbf{T1: Route start (first pickup)} &
+\textbf{T2: Pickup $\rightarrow$ Route closure} &
+\textbf{T3: Pickup $\rightarrow$ pickup, different destination} &
+\textbf{T4: Pickup $\rightarrow$ pickup, same destination, no intermediate delivery needed} &
+\textbf{T5: Pickup $\rightarrow$ pickup, same destination, intermediate delivery needed} \\
+\hline\hline
+Current node $v$ &
+The route begins at the first pickup node $p(k)$, stored as $\pi_1$. &
+The route terminates after final delivery. &
+Route continues after delivery to the new pickup $p(k)$. &
+The next node is the new pickup $p(k)$. &
+Route continues after delivery to the new pickup $p(k)$. \\
+\hline
+Load $L$ &
+$L' = q_k$. &
+$L' = 0$. &
+$L' = q_k$. &
+$L' = L + q_k$. &
+$L' = q_k$. \\
+\hline
+Time $T$ &
+$T' = a_k^P + s_k^P$. &
+$T' = T_\delta$. &
+$T' = \max\{T_\delta + t_{\delta,p(k)},\,a_k^P\} + s_k^P$. &
+$T' = \max\{T + t_{v,p(k)}, a_k^P\} + s_k^P$. &
+$T' = \max\{T_\delta + t_{\delta,p(k)},\,a_k^P\} + s_k^P$. \\
+\hline
+Current cost $C$ &
+$C' = 0$. &
+$C' = C_\delta + \rho \cdot c_{\delta,\pi_1}$. &
+$C' = C_\delta + c_{\delta,p(k)}$. &
+$C' = C + c_{v,p(k)}$. &
+$C' = C_\delta + c_{\delta,p(k)}$. \\
+\hline
+Current batch $o$ &
+$o' = \{k\}$. &
+$o' = \varnothing$. &
+$o' = \{k\}$. &
+$o' = o \cup \{k\}$. &
+$o' = \{k\}$. \\
+\hline
+Initiated requests $S$ &
+$S' = S \cup \{k\}$. &
+$S' = S$. &
+$S' = S \cup \{k\}$. &
+$S' = S \cup \{k\}$. &
+$S' = S \cup \{k\}$. \\
+\hline
+Active destination $\delta$ &
+$\delta' = d(k)$. &
+$\delta' = \varnothing$. &
+$\delta' = d(k)$. &
+$\delta' = \delta$. &
+$\delta' = d(k)$. \\
+\hline
+Partial route $\tilde{\pi}$ &
+Initialize with $p(k)$. &
+Append $\delta$. &
+Append $\delta$, $p(k)$. &
+Append $p(k)$. &
+Append $\delta$, $p(k)$. \\
+\hline
+\end{tabularx}
+\captionof{table}{State transitions in the 1D-PDPTW state-space algorithm. The state attributes $v$, $L$, $T$, $C$, $o$, $S$. $\delta$, and $\tilde{\pi}$ are the attributes of a given state (where applicable) before the transition. The quantities $T_\delta$ and $C_\delta$ denote the output of $\textsc{Deliver}(o)$ at the active destination $\delta$. Deliveries are embedded in the transition logic where applicable. $\pi_1$ denotes the first physical node visited by the route, fixed at the start of the route (T1) and carried unchanged by all subsequent transitions; it is required to evaluate the non-loop penalty at route closure (T2). $\rho$ denotes the non-loop route penalty ratio. The state snapshot is taken after the vehicle completes service at the current node and is ready to depart.}
+\label{tab:state-transitions}
+\end{minipage}
+\vspace*{\fill}
+\end{landscape}
 
-Their main contribution is a parallel regret insertion heuristic for the
-DARP. A regret-based insertion heuristic is a construction heuristic that
-iteratively inserts requests into a partial solution in order of their regret
-value, which is the difference in cost between the best and second-best
-feasible insertion positions for that request.
 
+\section{Results}
 
-\paragraph{Cordeau (2006) -- A Branch-and-Cut Algorithm for the Dial-a-Ride Problem}
+\begin{table}[htbp]
+\centering
+\caption{Comparative Results of Stefan's branch-and-price solver against Sjaak's extended solver.}
 
-Cordeau~\citet{cordeauBranchandCutAlgorithmDialaRide2006} studies the
-dial-a-ride problem and develops a branch-and-cut algorithm.
+\begin{tabular}{lrrrr}
+    \toprule
+    Instance & Stefan (obj) & Stefan time [s] & Sjaak (obj) & Sjaak time [s] \\
+    \midrule
 
+    bar-n100-1\_50\% & 663 & 0.62 & 666$^*$ & 68400.3 \\
+    bar-n100-1\_75\% & 646.5 & 5.50 & 674$^*$ & 21998.3 \\
+    bar-n100-2\_20req\_75\% & 297 & 0.01 & 297 & 3001.4 \\
+    bar-n100-5\_25req\_50\% & 385 & 0.02 & -- & -- \\
+    ber-n100-1\_20req\_25\% & 759.5 & 0.00 & -- & -- \\
+    ber-n100-1\_25req\_25\% & 899 & 0.00 & -- & -- \\
+    ber-n100-5\_50\% & 1402.5 & 0.05 & -- & -- \\
+    ber-n100-5\_75\% & 1216 & 0.09 & -- & -- \\
+    nyc-n100-3\_5\% & 111.5 & 457.00 & -- & -- \\
+    nyc-n100-3\_25\% & 455 & 0.50 & -- & -- \\
+    nyc-n100-3\_50\% & 536.5 & 0.36 & 540$^*$ & 22051.3 \\
+    nyc-n100-3\_75\% & 519 & 0.33 & -- & -- \\
+    nyc-n100-4\_25req\_5\% & 284 & 0.04 & -- & -- \\
+    \bottomrule
+\end{tabular}
 
-\paragraph{Ropke, Cordeau, and Laporte (2007) -- Models and Branch-and-Cut Algorithms for Pickup and Delivery Problems with Time Windows}
+\vspace{4pt}
+\footnotesize
+$^*$ Route enumeration for the extended model hit its configured time limit (3,000s / 21,000s / 68,400s) before completing all relevant request-subset sizes, so the reported objective and its 0\% MIP gap are only optimal with respect to the incomplete route pool at that point, not globally. The distortions between Stefan's and Sjaak's results for the larger instances are due to cases where Stefan's optimal solution uses one or more longer routes that are not in the route pool of Sjaak's extended model.
 
-Ropke et al.~\citet{ropkeModelsBranchandcutAlgorithms2007} study the
-pickup and delivery problem with time windows and the closely related
-dial-a-ride problem.
-
-
-\paragraph{Ropke and Cordeau (2009) -- Branch and Cut and Price for the Pickup and Delivery Problem with Time Windows}
-
-Ropke and Cordeau~\citet{ropkeBranchCutPrice2009} study the pickup and
-delivery problem with time windows.
-
-
-\paragraph{Ghilas, Demir, and Van Woensel (2016) -- The Pickup and Delivery Problem with Time Windows and Scheduled Lines}
-
-Ghilas et al.~\citet{ghilasPickupDeliveryProblem2016} study a variant of
-the pickup and delivery problem with time windows in which scheduled
-public transportation services can be used.
-
-
-\paragraph{Gschwind, Irnich, Rothenbächer, and Tilk (2018) -- Bidirectional Labeling in Column-Generation Algorithms for Pickup-and-Delivery Problems}
-
-Gschwind et al.~\citet{gschwindBidirectionalLabelingColumngeneration2018}
-study acceleration techniques for column-generation algorithms for
-pickup-and-delivery problems.
-
-
-\paragraph{Potvin and Rousseau (1993) -- A Parallel Route Building Algorithm for the Vehicle Routing and Scheduling Problem with Time Windows}
-
-Potvin and Rousseau~\citet{potvinParallelRouteBuilding1993} study the
-vehicle routing and scheduling problem with time windows.
-
-
+\end{table}
 %% For citations use: 
 %%       \citet{<label>} ==> Lamport (1994)
 %%       \citep{<label>} ==> (Lamport, 1994)

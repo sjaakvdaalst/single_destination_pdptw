@@ -1,3 +1,125 @@
+@article{abreuRobustPickupDelivery2026,
+  title = {The Robust Pickup and Delivery Problem with Time Windows},
+  author = {Abreu, Alex and Battarra, Maria and Costa, Luciano and Munari, Pedro},
+  year = 2026,
+  month = dec,
+  journal = {European Journal of Operational Research},
+  volume = {335},
+  number = {3},
+  pages = {812--828},
+  issn = {0377-2217},
+  doi = {10.1016/j.ejor.2026.03.031},
+  urldate = {2026-09-14},
+  abstract = {This study addresses the robust pickup and delivery problem with time windows (RPDPTW), in which uncertainty in demands and travel times is modelled using robust optimisation. The RPDPTW involves determining the least-cost routes to serve transportation requests from origins to destinations, while respecting vehicle capacity and time window constraints under all anticipated realisations of uncertain data. Two robust counterpart formulations are proposed. The first employs the linearisation of recursive equations to produce a compact formulation, suitable for implementation with general-purpose mixed-integer programming solvers. The second relies on a cutting-plane approach, incorporated into a tailored branch-and-cut (B\&C) algorithm. Extensive computational experiments were conducted to evaluate the proposed methods across diverse instance configurations. While the compact formulation performed effectively in some cases, the B\&C algorithm solved a larger number of instances to optimality and consistently provided high-quality solutions under uncertainty. Also, the effectiveness of the B\&C is compared with an implementation of a branch-cut-and-price framework adapted for the RPDPTW. Our findings show that robust solutions significantly reduce the risk of infeasibility compared to deterministic solutions, with modest increases in routing costs. In addition, we provide managerial insights by analysing the results of Monte Carlo simulations across different instance characteristics and how the robustness impact the solution's structure.},
+  keywords = {demand uncertainty,pickup and delivery problem,routing,time windows,travel time uncertainty},
+  file = {C\:\\Users\\sjaak\\Zotero\\storage\\284DY4LC\\Abreu et al. - 2026 - The robust pickup and delivery problem with time windows.pdf;C\:\\Users\\sjaak\\Zotero\\storage\\D3C29P25\\S037722172600278X.html}
+}
+
+@article{alyasiryExactAlgorithmPickup2019,
+  title = {An {{Exact Algorithm}} for the {{Pickup}} and {{Delivery Problem}} with {{Time Windows}} and {{Last-in-First-out Loading}}},
+  author = {Alyasiry, Ali Mehsin and Forbes, Michael and Bulmer, Michael},
+  year = 2019,
+  month = nov,
+  journal = {Transportation Science},
+  volume = {53},
+  number = {6},
+  pages = {1695--1705},
+  publisher = {INFORMS},
+  issn = {0041-1655},
+  doi = {10.1287/trsc.2019.0905},
+  urldate = {2026-09-23},
+  abstract = {Applications of the pickup and delivery problem with time windows and last-in-first-out (LIFO) loading (PDPTWL) constraints can be found in the transportation of animals, heavyweight goods, and hazardous materials, where unloading vehicles requires more time and special handling. Examples include carrying livestock, cars, and chemical containers. Research on exact methods to solve the pickup and delivery problem with time windows (PDPTW) and its variants has mainly focused on branch-and-price-and-cut algorithms. In this paper, we propose a novel exact approach based on fragments---a series of pickup and delivery requests starting and ending with an empty vehicle. We use fragments to formulate a relaxed network flow model with side constraints. Lazy constraints are used to cut off any illegal solution that may occur while solving the integer program. Extensive computational experiments show that the proposed approach is superior to the current state-of-the-art method.},
+  keywords = {exact,lazy constraints,LIFO loading constraints,pickup and delivery,vehicle routing}
+}
+
+@article{baldacciExactAlgorithmPickup2011,
+  title = {An {{Exact Algorithm}} for the {{Pickup}} and {{Delivery Problem}} with {{Time Windows}}},
+  author = {Baldacci, Roberto and Bartolini, Enrico and Mingozzi, Aristide},
+  year = 2011,
+  month = apr,
+  journal = {Operations Research},
+  volume = {59},
+  number = {2},
+  pages = {414--426},
+  publisher = {INFORMS},
+  issn = {0030-364X},
+  doi = {10.1287/opre.1100.0881},
+  urldate = {2026-09-15},
+  abstract = {The pickup and delivery problem with time windows (PDPTW) is a generalization of the vehicle routing problem with time windows. In the PDPTW, a set of identical vehicles located at a central depot must be optimally routed to service a set of transportation requests subject to capacity, time window, pairing, and precedence constraints. In this paper, we present a new exact algorithm for the PDPTW based on a set-partitioning--like integer formulation, and we describe a bounding procedure that finds a near-optimal dual solution of the LP-relaxation of the formulation by combining two dual ascent heuristics and a cut-and-column generation procedure. The final dual solution is used to generate a reduced problem containing only the routes whose reduced costs are smaller than the gap between a known upper bound and the lower bound achieved. If the resulting problem has moderate size, it is solved by an integer programming solver; otherwise, a branch-and-cut-and-price algorithm is used to close the integrality gap. Extensive computational results over the main instances from the literature show the effectiveness of the proposed exact method.},
+  keywords = {column generation,dual ascent,pickup and delivery,set partitioning}
+}
+
+@article{barbosaPickupDeliveryProblem2026,
+  title = {The Pickup and Delivery Problem with Time Windows and Scheduling on the Edges},
+  author = {Barbosa, V{\'i}tor A. and Tiwari, Sunil and Melo, Rafael A.},
+  year = 2026,
+  month = sep,
+  journal = {European Journal of Operational Research},
+  volume = {333},
+  number = {3},
+  pages = {788--806},
+  issn = {0377-2217},
+  doi = {10.1016/j.ejor.2026.01.036},
+  urldate = {2026-09-14},
+  abstract = {We introduce the Pickup and Delivery Problem with Time Windows and Scheduling on the Edges (PDPTW-SE), a generalization of the PDPTW that integrates vehicle routing and machine scheduling. The problem involves defining routes for transportation requests with specific pickup and delivery locations using a heterogeneous vehicle fleet, while machines must be scheduled to traverse certain edges. The objective is to minimize the total completion time subject to capacity, time window, and precedence constraints. We propose a mixed-integer linear programming (MIP) formulation, including preprocessing and valid inequalities, and a multi-start heuristic with a linear programming (LP) improvement procedure. A benchmark set with two instance families is also introduced: (i) coordination of pickups and deliveries across islands requiring cargo ships, and (ii) transport across multiple floors, as in hospitals, requiring elevator scheduling. Computational experiments show that the solver on the MIP formulation solves instances with up to 12 requests and finds feasible solutions for 95.0\% of the 320 instances with up to 12 requests. For these, the heuristic consistently provides feasible solutions with low deviations, often matching or outperforming the MIP results. For the remaining 160 instances with 40 and 60 requests, only the heuristic finds feasible solutions. We thus recommend the MIP for short-horizon instances (up to 12 requests) and the heuristic for larger or long-horizon instances. Results also highlight the LP improvement procedure's relevance, reducing solution values by at least 5\% on average in general. For larger, tightly constrained instances, an additional machine helps with feasibility and solution quality.},
+  keywords = {Automated guided vehicles,Healthcare supply chain,Integrated routing and scheduling,Pickup and delivery problem with time windows,Routing},
+  file = {C\:\\Users\\sjaak\\Zotero\\storage\\RVUTTCVL\\Barbosa et al. - 2026 - The pickup and delivery problem with time windows and scheduling on the edges.pdf;C\:\\Users\\sjaak\\Zotero\\storage\\GH8ALYGL\\S0377221726000780.html}
+}
+
+@article{berbegliaStaticPickupDelivery2007,
+  title = {Static Pickup and Delivery Problems: A~Classification Scheme and Survey},
+  shorttitle = {Static Pickup and Delivery Problems},
+  author = {Berbeglia, Gerardo and Cordeau, Jean-Fran{\c c}ois and Gribkovskaia, Irina and Laporte, Gilbert},
+  year = 2007,
+  month = jul,
+  journal = {TOP},
+  volume = {15},
+  number = {1},
+  pages = {1--31},
+  issn = {1863-8279},
+  doi = {10.1007/s11750-007-0009-0},
+  urldate = {2026-03-26},
+  abstract = {Pickup and delivery problems constitute an important class of vehicle routing problems in which objects or people have to be collected and distributed. This paper introduces a~general framework to model a~large collection of pickup and delivery problems, as well as a~three-field classification scheme for these problems. It surveys the methods used for solving them.},
+  langid = {english},
+  keywords = {90-02,90B06,Backhauls,Dial-a-ride problem,Stacker crane,Swapping problem,Vehicle routing},
+  file = {C:\Users\sjaak\Zotero\storage\ASV4NCWQ\Berbeglia et al. - 2007 - Static pickup and delivery problems a classification scheme and survey.pdf}
+}
+
+@article{bettinelliBranchandpriceAlgorithmMultidepot2014,
+  title = {A Branch-and-Price Algorithm for the Multi-Depot Heterogeneous-Fleet Pickup and Delivery Problem with Soft Time Windows},
+  author = {Bettinelli, Andrea and Ceselli, Alberto and Righini, Giovanni},
+  year = 2014,
+  month = jun,
+  journal = {Mathematical Programming Computation},
+  volume = {6},
+  number = {2},
+  pages = {171--197},
+  issn = {1867-2957},
+  doi = {10.1007/s12532-014-0064-0},
+  urldate = {2026-09-23},
+  abstract = {The growing cost of transportation and distribution pushes companies, especially small and medium transportation enterprises, to form partnership and to exploit economies of scale. On the other hand, to increase their competitiveness on the market, companies are asked to consider preferences of the customers as well. Therefore, tools for logistics management need to manage collective resources, as many depots and heterogeneous fleets, providing flexible preference handling at the same time. In this paper we tackle a pickup and delivery vehicle routing problem involving such aspects; customers place preferences on visiting time (represented as soft time windows), and their violation is allowed at a price. Our interest in this problem stems from an ongoing industrial project. First we propose an exact branch-and-price algorithm, having as a core advanced dynamic programming techniques. Then we analyze through a computational campaign the impact of soft time windows management on the optimal solution in terms of both routing and overall distribution costs. Our experiments show that our approach can solve instances of real size, and clarify the practical usefulness of soft time windows management.},
+  langid = {english},
+  keywords = {65K05,90B06,90C27,90C90},
+  file = {C:\Users\sjaak\Zotero\storage\Q64DB76M\Bettinelli et al. - 2014 - A branch-and-price algorithm for the multi-depot heterogeneous-fleet pickup and delivery problem wit.pdf}
+}
+
+@article{cherkeslyBranchPriceandCutAlgorithmsPickup2015,
+  title = {Branch-{{Price-and-Cut Algorithms}} for the {{Pickup}} and {{Delivery Problem}} with {{Time Windows}} and {{Last-in-First-Out Loading}}},
+  author = {Cherkesly, Maril{\`e}ne and Desaulniers, Guy and Laporte, Gilbert},
+  year = 2015,
+  month = nov,
+  journal = {Transportation Science},
+  volume = {49},
+  number = {4},
+  pages = {752--766},
+  publisher = {INFORMS},
+  issn = {0041-1655},
+  doi = {10.1287/trsc.2014.0535},
+  urldate = {2026-09-23},
+  abstract = {This paper proposes models and algorithms for the pickup and delivery vehicle routing problem with time windows and last-in-first-out (LIFO) loading constraints (PDPTWL). The LIFO loading rule ensures that no handling is required prior to unloading an item from a vehicle: a linear stack loading structure is maintained and an item can only be delivered if it is the last one in the stack. Three exact branch-price-and-cut algorithms are proposed for this problem. The first incorporates the LIFO constraints in the master problem. The second one handles the LIFO constraints directly in the shortest path pricing problem. It applies a dynamic programming algorithm relying on an ad hoc dominance criterion. The third algorithm is a hybrid between the first two methods. Known valid inequalities are adapted to the PDPTWL and the impact of different path relaxations on the total computation time is investigated. Computational results obtained on instances derived from known instances of the pickup and delivery problem with time windows (PDPTW) are reported.},
+  keywords = {branch-price-and-cut,column generation,last-in-first-out loading,valid inequalities,vehicle routing with pickup and delivery}
+}
+
 @article{cordeauBranchandCutAlgorithmDialaRide2006,
   title = {A {{Branch-and-Cut Algorithm}} for the {{Dial-a-Ride Problem}}},
   author = {Cordeau, Jean-Fran{\c c}ois},
@@ -49,6 +171,41 @@
   file = {C\:\\Users\\sjaak\\Zotero\\storage\\GCVYVDGI\\Dumas et al. - 1991 - The pickup and delivery problem with time windows.pdf;C\:\\Users\\sjaak\\Zotero\\storage\\M4GQPIPY\\037722179190319Q.html}
 }
 
+@article{furtadoPickupDeliveryProblem2017,
+  title = {Pickup and Delivery Problem with Time Windows: {{A}} New Compact Two-Index Formulation},
+  shorttitle = {Pickup and Delivery Problem with Time Windows},
+  author = {Furtado, Maria Gabriela S. and Munari, Pedro and Morabito, Reinaldo},
+  year = 2017,
+  month = jul,
+  journal = {Operations Research Letters},
+  volume = {45},
+  number = {4},
+  pages = {334--341},
+  issn = {0167-6377},
+  doi = {10.1016/j.orl.2017.04.013},
+  urldate = {2026-09-14},
+  abstract = {We propose a formulation for the pickup and delivery problem with time windows, based on a novel modeling strategy that allows the assignment of vehicles to routes explicitly in two-index flow formulations. It leads to an effective compact formulation that can benefit OR practitioners interested in solving the problem by general-purpose optimization software. Computational experiments indicate that the proposed formulation has interesting features and best overall performance in relation to other compact formulations.},
+  keywords = {Compact formulation,Pickup and delivery,Precedence constraints,Time windows,Two-index formulation},
+  file = {C\:\\Users\\sjaak\\Zotero\\storage\\BXB6B5BL\\Furtado et al. - 2017 - Pickup and delivery problem with time windows A new compact two-index formulation.pdf;C\:\\Users\\sjaak\\Zotero\\storage\\HMEFVJYJ\\S0167637717302651.html}
+}
+
+@article{ghilasBranchandPricePickupDelivery2018,
+  title = {Branch-and-{{Price}} for the {{Pickup}} and {{Delivery Problem}} with {{Time Windows}} and {{Scheduled Lines}}},
+  author = {Ghilas, Veaceslav and Cordeau, Jean-Fran{\c c}ois and Demir, Emrah and Woensel, Tom Van},
+  year = 2018,
+  month = oct,
+  journal = {Transportation Science},
+  volume = {52},
+  number = {5},
+  pages = {1191--1210},
+  publisher = {INFORMS},
+  issn = {0041-1655},
+  doi = {10.1287/trsc.2017.0798},
+  urldate = {2026-09-23},
+  abstract = {The Pickup and Delivery Problem with Time Windows and Scheduled Lines (PDPTW-SL) consists of routing and scheduling a set of vehicles, by integrating them with scheduled public transportation lines, to serve a set of freight requests within their time windows. This paper presents an exact solution approach based on a branch-and-price algorithm. A path-based set partitioning formulation is used as the master problem, and a variant of the elementary shortest path problem with resource constraints is solved as the pricing problem. In addition, the proposed algorithm can also be used to solve the PDPTW with transfers (PDPTW-T) as a special case. Results of extensive computational experiments confirm the efficiency of the algorithm: it is able to solve small- and medium-size instances to optimality within reasonable execution time. More specifically, our algorithm solves the PDPTW-SL with up to 50 requests and the PDPTW-T with up to 40 requests on the considered instances. The online appendix is available at https://doi.org/10.1287/trsc.2017.0798.},
+  keywords = {column generation,freight transportation,pickup and delivery problem,scheduled lines}
+}
+
 @article{ghilasPickupDeliveryProblem2016,
   title = {The Pickup and Delivery Problem with Time Windows and Scheduled Lines},
   author = {Ghilas, Veaceslav and Demir, Emrah and Van Woensel, Tom},
@@ -83,6 +240,57 @@
   file = {C\:\\Users\\sjaak\\Zotero\\storage\\BT8CZRAI\\Gschwind et al. - 2018 - Bidirectional labeling in column-generation algorithms for pickup-and-delivery problems.pdf;C\:\\Users\\sjaak\\Zotero\\storage\\F7IR6Y3J\\S0377221717308780.html}
 }
 
+@article{lamOptimalMultiAgentPickup2025,
+  title = {Optimal {{Multi-Agent Pickup}} and {{Delivery Using Branch-and-Cut-and-Price Algorithms}}},
+  author = {Lam, Edward and Stuckey, Peter J. and Harabor, Daniel},
+  year = 2025,
+  month = jan,
+  journal = {Transportation Science},
+  volume = {59},
+  number = {1},
+  pages = {104--124},
+  publisher = {INFORMS},
+  issn = {0041-1655},
+  doi = {10.1287/trsc.2023.0268},
+  urldate = {2026-09-14},
+  abstract = {Given a set of agents and a set of pickup-delivery requests located on a two-dimensional grid map, the multi-agent pickup and delivery problem assigns the requests to the agents such that every agent moves from its start location to the locations of its assigned requests and finally, to its end location without colliding into other agents and that the sum of arrival times is minimized. This paper proposes two exact branch-and-cut-and-price algorithms for the problem. The first algorithm performs a three-level search. A high-level master problem selects an optimal sequence of requests and a path for every agent from a large collection. A mid-level sequencing problem and a low-level navigation problem are solved simultaneously to incrementally enlarge the collection of request sequences and paths. The second algorithm first solves the sequencing problem to find a set of request sequences and then solves the navigation problem to determine if paths compatible with the request sequences exist. Experimental results indicate that the integrated algorithm solves more instances with higher congestion, and the deferred algorithm solves more instances with lower congestion and could scale to 100 agents and 100 requests, significantly higher than a state-of-the-art suboptimal approach. Funding: This research was supported by the Australian Research Council [Discovery Early Career Researcher Award DE240100042 and Discovery Projects DP190100013 and DP200100025] and by Amazon. Supplemental Material: The online appendix is available at https://doi.org/10.1287/trsc.2023.0268.},
+  keywords = {automated guided vehicle,column generation,combinatorial Benders cuts,conflict-free routing,multi-agent path finding,multi-agent pickup and delivery,vehicle routing problem},
+  file = {C:\Users\sjaak\Zotero\storage\L6KNU435\Lam et al. - Optimal Multi-Agent Pickup and Delivery Using Branch-and-Cut-and-Price.pdf}
+}
+
+@article{liuFastDecompositionReconstruction2019,
+  title = {A {{Fast Decomposition}} and {{Reconstruction Framework}} for the {{Pickup}} and {{Delivery Problem With Time Windows}} and {{LIFO Loading}}},
+  author = {Liu, Fagui and Gui, Mengke and Yi, Chen and Lan, Yulin},
+  year = 2019,
+  journal = {IEEE Access},
+  volume = {7},
+  pages = {71813--71826},
+  issn = {2169-3536},
+  doi = {10.1109/ACCESS.2019.2920444},
+  urldate = {2026-09-23},
+  abstract = {The pickup and delivery problem with time windows and last-in-first-out (LIFO) loading (PDPTWL) is a combinational optimization problem extended from the well-known vehicle routing problem (VRP), in which the type of customer point is no longer single and the loading order of the requests must meet the LIFO constraint. Due to its NP-hard nature, it is difficult for exact algorithms and heuristics with a linear structure to solve a large-scale problem in a reasonable time. In this paper, we propose a fast decomposition and reconstruction framework (D\&R) to solve the PDPTWL with high quality in a relatively short time. An angle-based sweep method is used to decompose a complete solution into multiple sub-solutions, each of which is assigned to a tabu search for optimization. To speed up the whole process, the optimization procedure of sub-solutions is performed by different processors of multi-core CPU in parallel. Three neighborhood operators and three strategies to reduce the number of vehicles are designed to cope with the tabu search for further improvement. Moreover, the adaptive memory mechanism is added to provide a better start when the optimization procedure falls into the local optima. We compare our framework against the best known solutions on 119 instances with up to 300 requests, the results show that our framework is able to improve over 85\% (107 out of 119) of the best known solutions. More specifically, the number of vehicles is optimized by about 60\% (74 out of 119) and the driving distance by about 50\% (59 out of 119). In addition on instances with the largest size of requests, the computational time of our framework can be 1/50 of the comparative results, confirming its efficiency.},
+  keywords = {adaptive memory,Germanium,Heuristic algorithms,LIFO loading,Loading,Logistics,Microsoft Windows,Optimization,Pickup and delivery problem with time windows,tabu search,Transportation},
+  file = {C:\Users\sjaak\Zotero\storage\26NF334M\Liu et al. - 2019 - A Fast Decomposition and Reconstruction Framework for the Pickup and Delivery Problem With Time Wind.pdf}
+}
+
+@article{lyuPickupDeliveryProblem2023,
+  title = {The Pickup and Delivery Problem with Transshipments: {{Critical}} Review of Two Existing Models and a New Formulation},
+  shorttitle = {The Pickup and Delivery Problem with Transshipments},
+  author = {Lyu, Zefeng and Yu, Andrew Junfang},
+  year = 2023,
+  month = feb,
+  journal = {European Journal of Operational Research},
+  volume = {305},
+  number = {1},
+  pages = {260--270},
+  issn = {0377-2217},
+  doi = {10.1016/j.ejor.2022.05.053},
+  urldate = {2026-09-14},
+  abstract = {The pickup and delivery problem with transshipments (PDP-T) is generalized from the classical pickup and delivery problem (PDP) by allowing the transfer of requests between vehicles. After considering the time window constraints, the PDP-T is further generalized to the pickup and delivery problem with time windows and transshipments (PDPTW-T). In this paper, we review two state-of-the-art models for the PDP-T and PDPTW-T. We point out the possible issues existing in the models and provide our revisions. In addition, we develop a new mixed-integer linear programming formulation to solve the PDP-T and PDPTW-T. The performance of the proposed model is evaluated by solving 340 generated PDP-T instances and 360 open-access PDPTW-T instances. Computational results show that the proposed model outperforms the existing models in terms of solution quality and computing time. PTP-T instances with up to 25 requests and 2 transfer stations are solved to optimality by using the proposed model. As a comparison, the best-known benchmarks in the literature are instances with 5 requests and 1 transfer station. In addition, the computing time is significantly reduced. In our experiments, the average computational time for solving PDP-T is reduced by 96\%. For PDPTW-T instances, the solvable scale is increased from 3 requests and 4 transfer stations to 5 requests and 4 transfer stations. The average computing time is reduced by 40\%.},
+  keywords = {Logistics,Mixed-integer linear programming,Pickup and delivery,Time windows,Transshipments},
+  file = {C\:\\Users\\sjaak\\Zotero\\storage\\N2XWXJ5W\\Lyu und Yu - 2023 - The pickup and delivery problem with transshipments Critical review of two existing models and a ne.pdf;C\:\\Users\\sjaak\\Zotero\\storage\\6G38XNFA\\S0377221722004556.html}
+}
+
 @article{potvinParallelRouteBuilding1993,
   title = {A Parallel Route Building Algorithm for the Vehicle Routing and Scheduling Problem with Time Windows},
   author = {Potvin, Jean-Yves and Rousseau, Jean-Marc},
@@ -100,6 +308,18 @@
   file = {C\:\\Users\\sjaak\\Zotero\\storage\\QP5KRSP4\\Potvin and Rousseau - 1993 - A parallel route building algorithm for the vehicle routing and scheduling problem with time windows.pdf;C\:\\Users\\sjaak\\Zotero\\storage\\YL3I2R8J\\0377221793902218.html}
 }
 
+@article{ropkeAdaptiveLargeNeighborhood2006,
+  title = {An {{Adaptive Large Neighborhood Search Heuristic}} for the {{Pickup}} and {{Delivery Problem}} with {{Time Windows}}},
+  author = {Ropke, Stefan and Pisinger, David},
+  year = 2006,
+  journal = {Transportation Science},
+  volume = {40},
+  number = {4},
+  pages = {455--472},
+  keywords = {/unread},
+  file = {C:\Users\sjaak\Zotero\storage\9R73JICS\Ropke and Pisinger_2006_An Adaptive Large Neighborhood Search Heuristic fo.pdf}
+}
+
 @article{ropkeBranchCutPrice2009,
   title = {Branch and {{Cut}} and {{Price}} for the {{Pickup}} and {{Delivery Problem}} with {{Time Windows}}},
   author = {Ropke, Stefan and Cordeau, Jean-Fran{\c c}ois},
@@ -114,7 +334,8 @@
   doi = {10.1287/trsc.1090.0272},
   urldate = {2026-03-29},
   abstract = {In the pickup and delivery problem with time windows vehicle routes must be designed to satisfy a set of transportation requests, each involving a pickup and delivery location, under capacity, time window, and precedence constraints. This paper introduces a new branch-and-cut-and-price algorithm in which lower bounds are computed by solving through column generation the linear programming relaxation of a set partitioning formulation. Two pricing subproblems are considered in the column generation algorithm: an elementary and nonelementary shortest path problem. Valid inequalities are added dynamically to strengthen the relaxations. Some of the previously proposed inequalities for the pickup and delivery problem with time windows are also shown to be implied by the set partitioning formulation. Computational experiments indicate that the proposed algorithm outperforms a recent branch-and-cut algorithm.},
-  keywords = {branch and cut,branch and price,column generation,pickup and delivery,valid inequalities}
+  keywords = {branch and cut,branch and price,column generation,pickup and delivery,valid inequalities},
+  file = {C:\Users\sjaak\Zotero\storage\L3QHMQLD\Ropke und Cordeau - 2009 - Branch and Cut and Price for the Pickup and Delivery Problem with Time Windows.pdf}
 }
 
 @article{ropkeModelsBranchandcutAlgorithms2007,
@@ -132,6 +353,33 @@
   langid = {english},
   keywords = {branch-and-cut,pickup and delivery,time windows,valid inequalities},
   file = {C\:\\Users\\sjaak\\Zotero\\storage\\49DAPQF4\\Ropke et al. - 2007 - Models and branch-and-cut algorithms for pickup and delivery problems with time windows.pdf;C\:\\Users\\sjaak\\Zotero\\storage\\FCM2SAYL\\net.html}
+}
+
+@misc{sartoriInstancesPickupDelivery2020,
+  title = {Instances for the {{Pickup}} and {{Delivery Problem}} with {{Time Windows}} Based on Open Data - {{Mendeley Data}}},
+  author = {Sartori, Carlo Sulzbach and Buriol, Luciana},
+  year = 2020,
+  doi = {10.17632/wr2ct4r22f.2},
+  urldate = {2026-05-09},
+  howpublished = {https://data.mendeley.com/datasets/wr2ct4r22f/2},
+  file = {C:\Users\sjaak\Zotero\storage\U27YYQQP\2.html}
+}
+
+@article{sartoriStudyPickupDelivery2020,
+  title = {A Study on the Pickup and Delivery Problem with Time Windows: {{Matheuristics}} and New Instances},
+  shorttitle = {A Study on the Pickup and Delivery Problem with Time Windows},
+  author = {Sartori, Carlo S. and Buriol, Luciana S.},
+  year = 2020,
+  month = dec,
+  journal = {Computers \& Operations Research},
+  volume = {124},
+  pages = {105065},
+  issn = {0305-0548},
+  doi = {10.1016/j.cor.2020.105065},
+  urldate = {2026-09-14},
+  abstract = {In the present work, we study the Pickup and Delivery Problem with Time Windows, which generalizes the well-known Vehicle Routing Problem and has many potential applications to transportation services. The contributions span from an improved hybrid algorithm with a mathematical programming component (matheuristic) to a new method to generate instances for routing problems based on open data. We further provide a thorough component analysis of the proposed algorithm, a comparison to state-of-the-art methods, and investigate the differences in results obtained for a standard instance set and a new testbed. Numerical experiments show the proposed matheuristic works well for the standard benchmark set, whereas results in the new set are surprisingly divergent. The possible reasons and future research directions are discussed. In addition, a number of solutions to the standard instances have been improved.},
+  keywords = {Instances,Metaheuristic,Pickup and delivery,Time windows},
+  file = {C:\Users\sjaak\Zotero\storage\DLGMC6MU\S0305054820301829.html}
 }
 
 @article{savelsberghGeneralPickupDelivery1995,
@@ -160,6 +408,7 @@
   pages = {417--431},
   publisher = {Springer},
   address = {Berlin, Heidelberg},
+  doi = {10.1007/3-540-49481-2_30},
   abstract = {We use a local search method we term Large Neighbourhood Search (LNS) to solve vehicle routing problems. LNS is analogous to the shuffing technique of job-shop scheduling, and so meshes well with constraint programming technology. LNS explores a large neighbourhood of the current solution by selecting a number of ``related'' customer visits to remove from the set of planned routes, and re-inserting these visits using a constraint-based tree search. Unlike similar methods, we use Limited Discrepancy Search during the tree search to re-insert visits. We analyse the performance of our method on benchmark problems. We demonstrate that results produced are competitive with Operations Research meta-heuristic methods, indicating that constraint-based technology is directly applicable to vehicle routing problems},
   isbn = {978-3-540-49481-2},
   langid = {english},
