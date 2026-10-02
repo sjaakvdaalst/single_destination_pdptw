@@ -328,9 +328,17 @@ size, total travel cost, total duration, or combinations thereof), which we
 draw on directly when positioning our own cost-minimization objective (or some weighted variant).
 
 
-\section{State Transitions Overview}
+\paragraph{\textbf{Bidirectional labeling for solving vehicle routing and truck driver scheduling problems}}
+
+\citet{tilkBidirectionalLabelingSolving2020} propose the first bidirectional labeling algorithm for the vehicle routing and truck driver scheduling problem (VRTDSP), a VRPTW variant. 
+The main point of interest is the bidirectional labeling algorithm, which may applied to our model, though here it is applied to a different routing problem. 
+
+
 
 \begin{landscape}
+
+\section{Forward Resource Extension Functions for the 1D-PDPTW}
+
 \vspace*{\fill}
 \noindent
 \begin{minipage}{\linewidth}
@@ -338,82 +346,66 @@ draw on directly when positioning our own cost-minimization objective (or some w
 \small
 \renewcommand{\arraystretch}{1.5}
 \setlength{\tabcolsep}{5pt}
-\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.1cm}|
-                                >{\raggedright\arraybackslash}X|
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.0cm}|
                                 >{\raggedright\arraybackslash}X|
                                 >{\raggedright\arraybackslash}X|
                                 >{\raggedright\arraybackslash}X|
                                 >{\raggedright\arraybackslash}X|}
 \hline
-\textbf{State attribute} &
+\textbf{State attribute after transition} &
 \textbf{T1: Route start (first pickup)} &
-\textbf{T2: Pickup $\rightarrow$ Route closure} &
-\textbf{T3: Pickup $\rightarrow$ pickup, different destination} &
-\textbf{T4: Pickup $\rightarrow$ pickup, same destination, no intermediate delivery needed} &
-\textbf{T5: Pickup $\rightarrow$ pickup, same destination, intermediate delivery needed} \\
+\textbf{T2: Extend current batch} &
+\textbf{T3: Close current batch and start new batch} &
+\textbf{T4: Route closure} \\
 \hline\hline
-Current node $v$ &
-The route begins at the first pickup node $p(k)$, stored as $\pi_1$. &
-The route terminates after final delivery. &
-Route continues after delivery to the new pickup $p(k)$. &
-The next node is the new pickup $p(k)$. &
-Route continues after delivery to the new pickup $p(k)$. \\
+Current node $v'$ &
+$p(k)$. &
+$p(k)$. &
+$p(k)$. &
+--- \\
 \hline
-Load $L$ &
-$L' = q_k$. &
-$L' = 0$. &
-$L' = q_k$. &
-$L' = L + q_k$. &
-$L' = q_k$. \\
+Current time $T'$ &
+$a_k + s_k$. &
+$\max\{T + t_{v,p(k)},\,a_k\} + s_k$. &
+$\max\{T_\delta + t_{\delta,p(k)},\,a_k\} + s_k$. &
+--- \\
 \hline
-Time $T$ &
-$T' = a_k^P + s_k^P$. &
-$T' = T_\delta$. &
-$T' = \max\{T_\delta + t_{\delta,p(k)},\,a_k^P\} + s_k^P$. &
-$T' = \max\{T + t_{v,p(k)}, a_k^P\} + s_k^P$. &
-$T' = \max\{T_\delta + t_{\delta,p(k)},\,a_k^P\} + s_k^P$. \\
+Current cost $C'$ &
+$0$. &
+$C + c_{v,p(k)}$. &
+$C_\delta + c_{\delta,p(k)}$. &
+$C_\delta + \rho \cdot c_{\delta,\pi_1}$. \\
 \hline
-Current cost $C$ &
-$C' = 0$. &
-$C' = C_\delta + \rho \cdot c_{\delta,\pi_1}$. &
-$C' = C_\delta + c_{\delta,p(k)}$. &
-$C' = C + c_{v,p(k)}$. &
-$C' = C_\delta + c_{\delta,p(k)}$. \\
+Current batch $o'$ &
+$\{k\}$. &
+$o \cup \{k\}$. &
+$\{k\}$. &
+--- \\
 \hline
-Current batch $o$ &
-$o' = \{k\}$. &
-$o' = \varnothing$. &
-$o' = \{k\}$. &
-$o' = o \cup \{k\}$. &
-$o' = \{k\}$. \\
+Requests served $S'$ &
+--- &
+$S$ &
+$S \cup o$. &
+$S \cup o$. \\
 \hline
-Initiated requests $S$ &
-$S' = S \cup \{k\}$. &
-$S' = S$. &
-$S' = S \cup \{k\}$. &
-$S' = S \cup \{k\}$. &
-$S' = S \cup \{k\}$. \\
-\hline
-Active destination $\delta$ &
-$\delta' = d(k)$. &
-$\delta' = \varnothing$. &
-$\delta' = d(k)$. &
-$\delta' = \delta$. &
-$\delta' = d(k)$. \\
-\hline
-Partial route $\tilde{\pi}$ &
-Initialize with $p(k)$. &
-Append $\delta$. &
-Append $\delta$, $p(k)$. &
-Append $p(k)$. &
-Append $\delta$, $p(k)$. \\
+Current partial route $\pi'$ &
+$(p(k))$. &
+Append $p(k)$ to $\pi$. &
+Append $\delta, p(k)$ to $\pi$. &
+Append $\delta$ to $\pi$. \\
 \hline
 \end{tabularx}
-\captionof{table}{State transitions in the 1D-PDPTW state-space algorithm. The state attributes $v$, $L$, $T$, $C$, $o$, $S$, $\delta$, and $\tilde{\pi}$ are the attributes of a given state (where applicable) before the transition. The quantities $T_\delta$ and $C_\delta$ denote the output of $\textsc{Deliver}(o)$ at the active destination $\delta$. Deliveries are embedded in the transition logic where applicable. $\pi_1$ denotes the first physical node visited by the route, fixed at the start of the route (T1) and carried unchanged by all subsequent transitions; it is required to evaluate the non-loop penalty at route closure (T2). $\rho$ denotes the non-loop route penalty ratio. The state snapshot is taken after the vehicle completes service at the current node and is ready to depart.}
-\label{tab:state-transitions}
+\captionof{table}{
+    Overview of forward REFs in the 1D-PDPTW model. The state attributes $v$, $T$, $C$, $o$, $S$, and $\pi$ are the attributes of a given state (where applicable) before the transition. The first transition (T1) initializes a route with the first pickup request $k$; the second transition (T2) extends the current batch with a new pickup request $k$ that has the same destination as the current batch; the third transition (T3) closes the current batch by delivering all requests in $o$ at their common destination $\delta$, and then starts a new batch with a new pickup request $k$; and the fourth transition (T4) closes the route by delivering all remaining requests in $o$ at their common destination $\delta$. 
+    Deliveries are embedded in the transition logic through the subroutine $\textsc{Deliver}$, which carries out the delivery of the batch in sequential EDD order if feasible. The quantities $T_\delta$ and $C_\delta$ denote the output of $\textsc{Deliver}(o)$ at the active destination $\delta$. $\pi_1$ denotes the first physical node visited by the route, fixed at the start of the route (T1) and carried unchanged by all subsequent transitions; it is required to evaluate the non-loop penalty at route closure (T2). 
+    $\rho$ denotes the non-loop route penalty ratio. The state snapshot is taken after the vehicle completes service at the current node and is ready to depart.
+}
+\label{tab:forward-refs}
 \end{minipage}
 \vspace*{\fill}
 \end{landscape}
+
+
 
 
 \section{Results}
