@@ -362,47 +362,199 @@ Current node $v'$ &
 $p(k)$. &
 $p(k)$. &
 $p(k)$. &
---- \\
+$\delta$ \\
 \hline
 Current time $T'$ &
 $a_k + s_k$. &
 $\max\{T + t_{v,p(k)},\,a_k\} + s_k$. &
 $\max\{T_\delta + t_{\delta,p(k)},\,a_k\} + s_k$. &
---- \\
+$T_\delta$ \\
 \hline
 Current cost $C'$ &
 $0$. &
 $C + c_{v,p(k)}$. &
 $C_\delta + c_{\delta,p(k)}$. &
-$C_\delta + \rho \cdot c_{\delta,\pi_1}$. \\
+$C_\delta + \rho \cdot c_{\delta,p(k_1)}$. \\
 \hline
+Current load $L'$ &
+$q_k$. &
+$L + q_k$. &
+$q_k$. &
+$0$. \\
+\hline 
 Current batch $o'$ &
 $\{k\}$. &
 $o \cup \{k\}$. &
 $\{k\}$. &
---- \\
+$\emptyset$ \\
 \hline
-Requests served $S'$ &
---- &
+Requests delivered $S'$ &
+$\emptyset$ &
 $S$ &
 $S \cup o$. &
 $S \cup o$. \\
 \hline
-Current partial route $\pi'$ &
-$(p(k))$. &
-Append $p(k)$ to $\pi$. &
-Append $\delta, p(k)$ to $\pi$. &
-Append $\delta$ to $\pi$. \\
-\hline
 \end{tabularx}
 \captionof{table}{
-    Overview of forward REFs in the 1D-PDPTW model. The state attributes $v$, $T$, $C$, $o$, $S$, and $\pi$ are the attributes of a given state (where applicable) before the transition. The first transition (T1) initializes a route with the first pickup request $k$; the second transition (T2) extends the current batch with a new pickup request $k$ that has the same destination as the current batch; the third transition (T3) closes the current batch by delivering all requests in $o$ at their common destination $\delta$, and then starts a new batch with a new pickup request $k$; and the fourth transition (T4) closes the route by delivering all remaining requests in $o$ at their common destination $\delta$. 
-    Deliveries are embedded in the transition logic through the subroutine $\textsc{Deliver}$, which carries out the delivery of the batch in sequential EDD order if feasible. The quantities $T_\delta$ and $C_\delta$ denote the output of $\textsc{Deliver}(o)$ at the active destination $\delta$. $\pi_1$ denotes the first physical node visited by the route, fixed at the start of the route (T1) and carried unchanged by all subsequent transitions; it is required to evaluate the non-loop penalty at route closure (T2). 
-    $\rho$ denotes the non-loop route penalty ratio. The state snapshot is taken after the vehicle completes service at the current node and is ready to depart.
+    Overview of forward REFs in the 1D-PDPTW model. The state snapshot is taken after the vehicle completes service at the current node and is ready to depart. The state attributes $v$, $T$, $C$, $L$, $o$, and $S$ are the attributes of a given state before the transition, initialized at T1 with the first pickup request $k$. 
+    Deliveries are embedded in the transition logic through the subroutine $\textsc{Deliver}$, which is feasible if the batch can be delivered in EDD order within the respective request time windows. The quantities $T_\delta$ and $C_\delta$ denote the output of $\textsc{Deliver}(o)$ at the active physical destination $\delta$. 
+    $p(k_1)$ denotes the first physical node visited by the route, fixed at the start of the route (T1). $\rho$ denotes the non-loop route penalty ratio.
 }
 \label{tab:forward-refs}
 \end{minipage}
 \vspace*{\fill}
+
+
+\newpage
+
+\section{Forward Resource Extension Functions for the 1D-PDPTW (with feasibility conditions)}
+
+\vspace*{\fill}
+\noindent
+\begin{minipage}{\linewidth}
+\centering
+\small
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{5pt}
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.0cm}|
+                                >{\raggedright\arraybackslash}X|
+                                >{\raggedright\arraybackslash}X|
+                                >{\raggedright\arraybackslash}X|
+                                >{\raggedright\arraybackslash}X|}
+\hline
+\textbf{State attribute after transition} &
+\textbf{T1: Route start (first pickup)} &
+\textbf{T2: Extend current batch} &
+\textbf{T3: Close current batch and start new batch} &
+\textbf{T4: Route closure} \\
+\hline\hline
+Current node $v'$ &
+$p(k)$. &
+$p(k)$. &
+$p(k)$. &
+$\delta$ \\
+\hline
+Current time $T'$ &
+$a_k + s_k$. &
+$\max\{T + t_{v,p(k)},\,a_k\} + s_k$. &
+$\max\{T_\delta + t_{\delta,p(k)},\,a_k\} + s_k$. &
+$T_\delta$ \\
+\hline
+Current cost $C'$ &
+$0$. &
+$C + c_{v,p(k)}$. &
+$C_\delta + c_{\delta,p(k)}$. &
+$C_\delta + \rho \cdot c_{\delta,p(k_1)}$. \\
+\hline
+Current load $L'$ &
+$q_k$. &
+$L + q_k$. &
+$q_k$. &
+$0$. \\
+\hline 
+Current batch $o'$ &
+$\{k\}$. &
+$o \cup \{k\}$. &
+$\{k\}$. &
+$\emptyset$ \\
+\hline
+Requests delivered $S'$ &
+$\emptyset$ &
+$S$ &
+$S \cup o$. &
+$S \cup o$. \\
+\hline\hline
+\textbf{Feasible if} &
+$L \le Q$ &
+$d(k) = \delta$, \newline
+$k \notin S' \cup o$, \newline
+$L' \le Q$, \newline
+$T' - s_k \le b_k$ &
+$k \notin S'$, \newline
+$\textsc{Deliver}(o)$ feasible, \newline
+$T' - s_k \le b_k$ &
+$\textsc{Deliver}(o)$ feasible, \newline
+$T_\delta \le H$ \\
+\hline
+\end{tabularx}
+\captionof{table}{
+    Overview of forward REFs in the 1D-PDPTW model. The state snapshot is taken after the vehicle completes service at the current node and is ready to depart. The state attributes $v$, $T$, $C$, $L$, $o$, and $S$ are the attributes of a given state before the transition, initialized at T1 with the first pickup request $k$. 
+    Deliveries are embedded in the transition logic through the subroutine $\textsc{Deliver}$, which is feasible if the batch can be delivered in EDD order within the respective request time windows. The quantities $T_\delta$ and $C_\delta$ denote the output of $\textsc{Deliver}(o)$ at the active physical destination $\delta$. 
+    $p(k_1)$ denotes the first physical node visited by the route, fixed at the start of the route (T1). $\rho$ denotes the non-loop route penalty ratio.
+}
+\label{tab:forward-refs-2}
+\end{minipage}
+\vspace*{\fill}
+
+\newpage
+
+\section{Backward Resource Extension Functions for the 1D-PDPTW}
+
+\vspace*{\fill}
+\noindent
+\begin{minipage}{\linewidth}
+\centering
+\small
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{5pt}
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.0cm}|
+                                >{\raggedright\arraybackslash}X|
+                                >{\raggedright\arraybackslash}X|
+                                >{\raggedright\arraybackslash}X|
+                                >{\raggedright\arraybackslash}X|}
+\hline
+\textbf{State attribute after transition} &
+\textbf{B1: Route end (last pickup of final batch)} &
+\textbf{B2: Prepend pickup to current batch} &
+\textbf{B3: Close current batch and prepend earlier batch} &
+\textbf{B4: Route start (first pickup)} \\
+\hline\hline
+Current node $v'$ &
+$p(k)$. &
+$p(k)$. &
+$p(k)$. &
+$v$. \\
+\hline
+Latest start time $T'$. &
+. &
+. &
+. &
+. \\
+\hline
+Cost $C'$. &
+$0$. &
+. &
+. &
+. \\
+\hline
+Load $L'$. &
+$q_k$. &
+$L + q_k$. &
+$q_k$. &
+$L$. \\
+\hline
+Current batch $o'$. &
+$\{k\}$. &
+$o \cup \{k\}$. &
+$\{k\}$. &
+$o$. \\
+\hline
+Requests delivered $S'$. &
+$\emptyset$ &
+$S$ &
+$S \cup o$ &
+$S \cup o$. \\
+\hline
+\end{tabularx}
+\captionof{table}{
+    ...
+    }
+\label{tab:backward-refs}
+\end{minipage}
+\vspace*{\fill}
+
+
+
 \end{landscape}
 
 
@@ -413,33 +565,38 @@ Append $\delta$ to $\pi$. \\
 \begin{table}[htbp]
 \centering
 \caption{Comparative Results of Stefan's branch-and-price solver against Sjaak's extended solver.}
+\small
+\setlength{\tabcolsep}{4pt}
 
-\begin{tabular}{lrrrr}
+\begin{tabular}{lrrrrr}
     \toprule
-    Instance & Stefan (obj) & Stefan time [s] & Sjaak (obj) & Sjaak time [s] \\
+    & \multicolumn{3}{c}{B\&P} & \multicolumn{2}{c}{Ext.} \\
+    \cmidrule(lr){2-4}\cmidrule(lr){5-6}
+    Instance & obj (log) & obj (csv) & time [s] & obj & time [s] \\
     \midrule
 
-    bar-n100-1\_50\% & 663 & 0.62 & 666$^*$ & 69068.6 \\
-    bar-n100-1\_75\% & 646.5 & 5.50 & 674$^*$ & 21998.3 \\
-    bar-n100-2\_20req\_75\% & 297 & 0.01 & 297 & 3001.4 \\
-    bar-n100-5\_25req\_50\% & 385 & 0.02 & -- & -- \\
-    ber-n100-1\_20req\_25\% & 759.5 & 0.00 & -- & -- \\
-    ber-n100-1\_25req\_25\% & 899 & 0.00 & -- & -- \\
-    ber-n100-5\_50\% & 1402.5 & 0.05 & -- & -- \\
-    ber-n100-5\_75\% & 1216 & 0.09 & -- & -- \\
-    nyc-n100-3\_5\% & 111.5 & 47.9 & -- & -- \\
-    nyc-n100-3\_25\% & 455 & 0.50 & -- & -- \\
-    nyc-n100-3\_50\% & 536.5 & 0.36 & 540$^*$ & 22051.3 \\
-    nyc-n100-3\_75\% & 519 & 0.33 & -- & -- \\
-    nyc-n100-4\_25req\_5\% & 284 & 0.04 & -- & -- \\
+    bar-n100-1\_50\% & 663.0 & 661.5 & 0.62 & 662.5 & 7912.0 \\
+    bar-n100-1\_75\% & 646.5 & 643.5 & 5.50 & 669.0 & 7978.6 \\
+    bar-n100-2\_20req\_75\% & 297.0 & 295.0 & 0.01 & 297.0 & 7207.8 \\
+    bar-n100-5\_25req\_50\% & 385.0 & 384.5 & 0.02 & 385.0 & 7299.4 \\
+    ber-n100-1\_20req\_25\% & 759.5 & 758.5 & 0.00 & 759.5 & 738.4 \\
+    ber-n100-1\_25req\_25\% & 899.0 & 899.0 & 0.00 & 899.0 & 1811.54 \\
+    ber-n100-5\_50\% & 1402.5 & 1398.0 & 0.05 & -- & -- \\
+    ber-n100-5\_75\% & 1216.0 & 1212.5 & 0.09 & -- & -- \\
+    nyc-n100-3\_5\% & 111.5 & 111.0 & 47.9 & 113.0 & 8410.7 \\
+    nyc-n100-3\_25\% & 455.0 & 454.0 & 0.50 & 454.5 & 8298.5 \\
+    nyc-n100-3\_50\% & 536.5 & 534.5 & 0.36 & 536.0 & 8343.4 \\
+    nyc-n100-3\_75\% & 519.0 & 517.0 & 0.33 & -- & -- \\
+    nyc-n100-4\_25req\_5\% & 284.0 & 283.5 & 0.04 & 287.0 & 7369.9 \\
     \bottomrule
 \end{tabular}
 
-\vspace{4pt}
-\footnotesize
-$^*$ Route enumeration for the extended model hit its configured time limit (3,000s / 21,000s / 68,400s) before completing all relevant request-subset sizes, so the reported objective and its 0\% MIP gap are only optimal with respect to the incomplete route pool at that point, not globally.
-
 \end{table}
+
+\paragraph{Notes} 
+The reason for the two B\&P obj. columns is that there is a mismatch between the log and csv outputs of the solver. 
+Also note thhat for medium to larger instances (requests > 20), Sjaak's extended solver operates on a restricted route pool, which is why the solutions are not always optimal globally.
+
 %% For citations use: 
 %%       \citet{<label>} ==> Lamport (1994)
 %%       \citep{<label>} ==> (Lamport, 1994)
@@ -464,5 +621,6 @@ $^*$ Route enumeration for the extended model hit its configured time limit (3,0
 \endinput
 %%
 %% End of file `elsarticle-template-harv.tex'.
+
 
 
