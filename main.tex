@@ -43,7 +43,12 @@
 \usepackage[utf8]{inputenc}
 \usepackage{pdflscape}
 \usepackage{tabularx}
+\usepackage{multirow}
 \usepackage{caption}
+
+\captionsetup[table]{labelsep=newline, labelfont=bf, justification=raggedright, singlelinecheck=false, skip=6pt, position=top}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
 \usepackage{setspace}
 \onehalfspacing
 
@@ -334,228 +339,307 @@ draw on directly when positioning our own cost-minimization objective (or some w
 The main point of interest is the bidirectional labeling algorithm, which may applied to our model, though here it is applied to a different routing problem. 
 
 
+\newpage
 
-\begin{landscape}
+\section{Forward labeling for the 1D-PDPTW}
+\label{sec:forward-labeling}
 
-\section{Forward Resource Extension Functions for the 1D-PDPTW}
+\paragraph{Labels}
+A forward partial path $(0, ..., i)$ visits pickup nodes only. It is represented by a forward label
+$L_f = (i, C_f, L_f, T_f, h_f, U_f, O_f, S_f)$, with the following attributes:
+the last visited pickup node $i$,
+the accumulated cost $C_f$,
+the load $L_f$ after service at $i$,
+the time $T_f$ at which the vehicle is ready to leave $i$,
+the home node $h_f$ (first pickup of the route, used for the closure penalty),
+the total unloading duration $U_f$ of the open requests,
+the set $O_f$ of open requests (picked up, not yet delivered), and
+the set $S_f$ of delivered requests.
 
-\vspace*{\fill}
-\noindent
-\begin{minipage}{\linewidth}
-\centering
-\small
-\renewcommand{\arraystretch}{1.5}
-\setlength{\tabcolsep}{5pt}
-\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.0cm}|
-                                >{\raggedright\arraybackslash}X|
-                                >{\raggedright\arraybackslash}X|
-                                >{\raggedright\arraybackslash}X|
-                                >{\raggedright\arraybackslash}X|}
-\hline
-\textbf{State attribute after transition} &
-\textbf{T1: Route start (first pickup)} &
-\textbf{T2: Extend current batch} &
-\textbf{T3: Close current batch and start new batch} &
-\textbf{T4: Route closure} \\
-\hline\hline
-Current node $v'$ &
-$p(k)$. &
-$p(k)$. &
-$p(k)$. &
-$\delta$ \\
-\hline
-Current time $T'$ &
-$a_k + s_k$. &
-$\max\{T + t_{v,p(k)},\,a_k\} + s_k$. &
-$\max\{T_\delta + t_{\delta,p(k)},\,a_k\} + s_k$. &
-$T_\delta$ \\
-\hline
-Current cost $C'$ &
-$0$. &
-$C + c_{v,p(k)}$. &
-$C_\delta + c_{\delta,p(k)}$. &
-$C_\delta + \rho \cdot c_{\delta,p(k_1)}$. \\
-\hline
-Current load $L'$ &
-$q_k$. &
-$L + q_k$. &
-$q_k$. &
-$0$. \\
-\hline 
-Current batch $o'$ &
-$\{k\}$. &
-$o \cup \{k\}$. &
-$\{k\}$. &
-$\emptyset$ \\
-\hline
-Requests delivered $S'$ &
-$\emptyset$ &
-$S$ &
-$S \cup o$. &
-$S \cup o$. \\
-\hline
-\end{tabularx}
-\captionof{table}{
-    Overview of forward REFs in the 1D-PDPTW model. The state snapshot is taken after the vehicle completes service at the current node and is ready to depart. The state attributes $v$, $T$, $C$, $L$, $o$, and $S$ are the attributes of a given state before the transition, initialized at T1 with the first pickup request $k$. 
-    Deliveries are embedded in the transition logic through the subroutine $\textsc{Deliver}$, which is feasible if the batch can be delivered in EDD order within the respective request time windows. The quantities $T_\delta$ and $C_\delta$ denote the output of $\textsc{Deliver}(o)$ at the active physical destination $\delta$. 
-    $p(k_1)$ denotes the first physical node visited by the route, fixed at the start of the route (T1). $\rho$ denotes the non-loop route penalty ratio.
-}
+By the single-destination requirement, all requests in $O_f$ share one destination, which we denote by 
+$d_i$ for a label at pickup node $i$. 
+
+\paragraph{Deliveries}
+Labels exist only at pickup nodes. Deliveries are embedded in the ressource extension functions, since 
+each delivery is a consequence of a pickup (there is some freedom for when the delivery occurs, but it
+remains a consequence of the pickup and not an isolated event). The open requests are unloaded at $d_i$ in 
+earliest-due-date first (EDD) order. The set of open requests $O_f$ (the current batch) is deliverable if every 
+request is completed by its deadline. 
+
+NOTE: It is possible to structure decisions in such a way that one only needs to decide what to do at 
+pickup nodes. E.g., at a given pickup node, one can decide to first deliver open requests and proceed to 
+a new pickup, or decide to go to a new pickup without delivering first, or delivering and then closing the route. 
+By eliminating delivery labels, we can decrease the size of our labeling algorithm.
+
+\paragraph{Initial label}
+Each route starts at an imaginary origin $0$ with $c_{0,\cdot} = t_{0,\cdot} = 0$. 
+The initial label is $L_f^0 = (0, 0, 0, 0, \bot, 0, \emptyset, \emptyset)$. 
+The route ends at an imaginary destination $\bar 0$ with $c_{\cdot,\bar 0} = t_{\cdot,\bar 0} = 0$.
+
+\paragraph{Label transitions}
+A label $L_f$ is propagated by one of four REFs, each of which creates a new label $L_f'$:
+\begin{itemize}
+  \item $f^{\mathrm{start}}$ opens the route with the first pickup $j$. It is the only REF applicable to $L_f^0$.
+  \item $f^{\mathrm{extend}}$ adds the request $k$ to the open batch.
+  \item $f^{\mathrm{switch}}$ delivers the open batch at $d_i$ and starts a new batch with request $k$.
+  \item $f^{\mathrm{end}}$ delivers the open batch at $d_i$ and closes the route at the imaginary destination $\bar 0$.
+\end{itemize}
+The REFs are given in Table~\ref{tab:forward-refs} and the conditions under which they 
+may be applied in Table~\ref{tab:forward-feasibility}.
+
+
+\newpage
+
+\begin{table}[!ht]
+\caption{Forward REFs of the 1D-PDPTW}
 \label{tab:forward-refs}
-\end{minipage}
-\vspace*{\fill}
+\footnotesize
+\renewcommand{\arraystretch}{1.6}
+\setlength{\tabcolsep}{5pt}
+\begin{tabularx}{\linewidth}{@{}l Y Y Y Y@{}}
+\toprule
+ & $f^{\mathrm{start}}$ & $f^{\mathrm{extend}}$ & $f^{\mathrm{switch}}$ & $f^{\mathrm{end}}$ \\
+\midrule
+
+$C_f'$
+& $C_f + c_{0,j}$
+& $C_f + c_{i,j}$
+& $C_f + c_{i,d_i} + c_{d_i,j}$
+& $C_f + c_{i,d_i} + \rho\, c_{d_i,h}$ \\
+
+$L_f'$
+& $q_k$
+& $L_f + q_k$
+& $q_k$
+& $0$ \\
+
+$T_f'$
+& $a_k + s_k$
+& $\max\{T_f + t_{i,j},\, a_k\} + s_k$
+& $\max\{T_f + t_{i,d_i} + U_f + t_{d_i,j},\, a_k\} + s_k$
+& $T_f + t_{i,d_i} + U_f$ \\
+
+$h_f'$
+& $j$
+& $h_f$
+& $h_f$
+& $h_f$ \\
+
+$U_f'$
+& $s_k$
+& $U_f + s_k$
+& $s_k$
+& $0$ \\
+
+$O_f'$
+& $\{k\}$
+& $O_f \cup \{k\}$
+& $\{k\}$
+& $\emptyset$ \\
+
+$S_f'$
+& $\emptyset$
+& $S_f$
+& $S_f \cup O$
+& $S_f \cup O$ \\
+
+\bottomrule
+\end{tabularx}
+\par\smallskip
+{\footnotesize\raggedright
+REFs for a label $L_f$ and an arc $(i,j)$, where $j$ is the pickup node of request $k$.\par}
+\end{table}
+
+
+
+\begin{table}[!ht]
+\caption{Feasibility conditions of the forward REFs}
+\label{tab:forward-feasibility}
+\footnotesize
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{6pt}
+\begin{tabularx}{\linewidth}{@{}l l X@{}}
+\toprule
+REF & Condition & Expression \\
+\midrule
+
+\multirow{3}{*}{$f^{\mathrm{start}}$}
+& Origin & $i = 0$ \\
+& Capacity & $q_k \leq Q$ \\
+& Deadline & $T_f' + t_{j,d_j} + s_k \leq b_k$ \\
+\midrule
+
+\multirow{5}{*}{$f^{\mathrm{extend}}$}
+& Non-origin & $i \neq 0$ \\
+& Elementarity & $k \notin S_f \cup O_f$ \\
+& Destination & $d_j = d_i$ \\
+& Capacity & $L_f + q_k \leq Q$ \\
+& Deadlines & $T_f' + t_{j,d_j} + \displaystyle\sum_{m \in O_f',\, b_m \leq b_l} s_m \leq b_l \;\; \forall\, l \in O_f'$ \\
+\midrule
+
+\multirow{4}{*}{$f^{\mathrm{switch}}$ }
+& Non-origin & $i \neq 0$ \\
+& Elementarity & $k \notin S_f \cup O_f$ \\
+& Capacity & $q_k \leq Q$ \\
+& Deadline & $T_f' + t_{j,d_j} + s_k \leq b_k$ \\
+\midrule
+
+\multirow{2}{*}{$f^{\mathrm{end}}$}
+& Non-origin & $i \neq 0$ \\
+& Horizon & $T_f' \leq H_f$ \\
+
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
 
 
 \newpage
 
-\section{Forward Resource Extension Functions for the 1D-PDPTW (with feasibility conditions)}
+\section{Backward labeling for the 1D-PDPTW}
+\label{sec:backward-labeling}
 
-\vspace*{\fill}
-\noindent
-\begin{minipage}{\linewidth}
-\centering
-\small
-\renewcommand{\arraystretch}{1.5}
-\setlength{\tabcolsep}{5pt}
-\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.0cm}|
-                                >{\raggedright\arraybackslash}X|
-                                >{\raggedright\arraybackslash}X|
-                                >{\raggedright\arraybackslash}X|
-                                >{\raggedright\arraybackslash}X|}
-\hline
-\textbf{State attribute after transition} &
-\textbf{T1: Route start (first pickup)} &
-\textbf{T2: Extend current batch} &
-\textbf{T3: Close current batch and start new batch} &
-\textbf{T4: Route closure} \\
-\hline\hline
-Current node $v'$ &
-$p(k)$. &
-$p(k)$. &
-$p(k)$. &
-$\delta$ \\
-\hline
-Current time $T'$ &
-$a_k + s_k$. &
-$\max\{T + t_{v,p(k)},\,a_k\} + s_k$. &
-$\max\{T_\delta + t_{\delta,p(k)},\,a_k\} + s_k$. &
-$T_\delta$ \\
-\hline
-Current cost $C'$ &
-$0$. &
-$C + c_{v,p(k)}$. &
-$C_\delta + c_{\delta,p(k)}$. &
-$C_\delta + \rho \cdot c_{\delta,p(k_1)}$. \\
-\hline
-Current load $L'$ &
-$q_k$. &
-$L + q_k$. &
-$q_k$. &
-$0$. \\
-\hline 
-Current batch $o'$ &
-$\{k\}$. &
-$o \cup \{k\}$. &
-$\{k\}$. &
-$\emptyset$ \\
-\hline
-Requests delivered $S'$ &
-$\emptyset$ &
-$S$ &
-$S \cup o$. &
-$S \cup o$. \\
-\hline\hline
-\textbf{Feasible if} &
-$L \le Q$ &
-$d(k) = \delta$, \newline
-$k \notin S' \cup o$, \newline
-$L' \le Q$, \newline
-$T' - s_k \le b_k$ &
-$k \notin S'$, \newline
-$\textsc{Deliver}(o)$ feasible, \newline
-$T' - s_k \le b_k$ &
-$\textsc{Deliver}(o)$ feasible, \newline
-$T_\delta \le H$ \\
-\hline
-\end{tabularx}
-\captionof{table}{
-    Overview of forward REFs in the 1D-PDPTW model. The state snapshot is taken after the vehicle completes service at the current node and is ready to depart. The state attributes $v$, $T$, $C$, $L$, $o$, and $S$ are the attributes of a given state before the transition, initialized at T1 with the first pickup request $k$. 
-    Deliveries are embedded in the transition logic through the subroutine $\textsc{Deliver}$, which is feasible if the batch can be delivered in EDD order within the respective request time windows. The quantities $T_\delta$ and $C_\delta$ denote the output of $\textsc{Deliver}(o)$ at the active physical destination $\delta$. 
-    $p(k_1)$ denotes the first physical node visited by the route, fixed at the start of the route (T1). $\rho$ denotes the non-loop route penalty ratio.
-}
-\label{tab:forward-refs-2}
-\end{minipage}
-\vspace*{\fill}
+\paragraph{Labels}
+A backward partial path $(j, \ldots, \bar 0)$ visits pickup nodes only. It is represented by a
+backward label $L_b = (j, C_b, L_b, T_b, h_b, U_b, O_b, S_b)$, with the following attributes: 
+the first visited pickup node $j$, 
+the accumulated cost $C_b$, 
+the total load $L_b$ of the open requests, 
+the latest start of service $T_b$ at node $j$, 
+the destination of the last batch $h_b$ (used for closure penalty calculation), 
+the accumulated delivery time $U_b$ of the open requests, 
+the set of open requests $O_b$, and 
+the set of delivered requests $S_b$. 
+By the single-destination requirement, all requests in $O_b$ share the destination $d_j$.
+
+\paragraph{Deliveries}
+Deliveries are again embedded into the REFs.
+
+NOTE: Not sure about timing still. By prepending another request to the batch, the EDD order might 
+change. We may need to add pickup time period as another attribute (time from start of first pickup in batch 
+to arrival destination), alongside $U_b$. 
+
+\paragraph{Terminal label}
+Each route ends at an imaginary destination $\bar 0$ with $c_{\cdot,\bar 0} = t_{\cdot,\bar 0} = 0$.
+The terminal label is $L_b^0 = (\bar 0, 0, 0, H, \bot, 0, \emptyset, \emptyset)$.
+
+\paragraph{Label transitions}
+A label $L_b$ at $j$ is propagated against the arc $(i,j)$, where $i$ is the pickup node of 
+request $k$, by one of four REFs, each of which creates a new label $L_b'$: 
+\begin{itemize}
+  \item $g^{\mathrm{end}}$ opens the backward path with the last pickup $i$ of the route. It is
+        the only REF applicable to $L_b^0$.
+  \item $g^{\mathrm{extend}}$ prepends the request $k$ to the open batch.
+  \item $g^{\mathrm{switch}}$ prepends a new batch consisting of $k$, which is delivered at $d_i$
+        before the vehicle continues to $j$.
+  \item $g^{\mathrm{start}}$ closes the backward path at the imaginary origin $0$.
+\end{itemize}
+The REFs are given in Table~\ref{tab:backward-refs} and the conditions under which they may be
+applied in Table~\ref{tab:backward-feasibility}.
+
 
 \newpage
 
-\section{Backward Resource Extension Functions for the 1D-PDPTW}
-
-\vspace*{\fill}
-\noindent
-\begin{minipage}{\linewidth}
-\centering
-\small
-\renewcommand{\arraystretch}{1.5}
-\setlength{\tabcolsep}{5pt}
-\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.0cm}|
-                                >{\raggedright\arraybackslash}X|
-                                >{\raggedright\arraybackslash}X|
-                                >{\raggedright\arraybackslash}X|
-                                >{\raggedright\arraybackslash}X|}
-\hline
-\textbf{State attribute after transition} &
-\textbf{B1: Route end (last pickup of final batch)} &
-\textbf{B2: Prepend pickup to current batch} &
-\textbf{B3: Close current batch and prepend earlier batch} &
-\textbf{B4: Route start (first pickup)} \\
-\hline\hline
-Current node $v'$ &
-$p(k)$. &
-$p(k)$. &
-$p(k)$. &
-$v$. \\
-\hline
-Latest start time $T'$. &
-. &
-. &
-. &
-. \\
-\hline
-Cost $C'$. &
-$0$. &
-. &
-. &
-. \\
-\hline
-Load $L'$. &
-$q_k$. &
-$L + q_k$. &
-$q_k$. &
-$L$. \\
-\hline
-Current batch $o'$. &
-$\{k\}$. &
-$o \cup \{k\}$. &
-$\{k\}$. &
-$o$. \\
-\hline
-Requests delivered $S'$. &
-$\emptyset$ &
-$S$ &
-$S \cup o$ &
-$S \cup o$. \\
-\hline
-\end{tabularx}
-\captionof{table}{
-    ...
-    }
+\begin{table}[!ht]
+\caption{Backward REFs of the 1D-PDPTW}
 \label{tab:backward-refs}
-\end{minipage}
-\vspace*{\fill}
+\footnotesize
+\renewcommand{\arraystretch}{1.6}
+\setlength{\tabcolsep}{5pt}
+\begin{tabularx}{\linewidth}{@{}l Y Y Y Y@{}}
+\toprule
+ & $g^{\mathrm{end}}$ & $g^{\mathrm{extend}}$ & $g^{\mathrm{switch}}$ & $g^{\mathrm{start}}$ \\
+\midrule
+
+$C_b'$
+& $C_b + c_{i,d_i}$
+& $C_b + c_{i,j}$
+& $C_b + c_{i,d_i} + c_{d_i,j}$
+& $C_b + \rho \cdot c_{h_b,j}$ \\
+
+$L_b'$
+& $q_k$
+& $L_b + q_k$
+& $q_k$
+& $0$ \\
+
+$T_b'$
+& $b_k - 2 s_k - t_{i,d_i}$
+& ?
+& $ \min\{T_b - t_{d_i,j} - b_k\} - 2 s_k - t_{i,d_i}$
+& $T$ \\
+
+$h_b'$
+& $d_i$
+& $h_b$
+& $h_b$
+& $h_b$ \\
+
+$U_b'$
+& $s_k$
+& $U_b + d_k$
+& $s_k$
+& $0$ \\
+
+$O_b'$
+& $\{k\}$
+& $O_b \cup \{k\}$
+& $\{k\}$
+& $\emptyset$ \\
+
+$S_b'$
+& $\emptyset$
+& $S_b$
+& $S_b \cup O$
+& $S_b \cup O$ \\
+
+\bottomrule
+\end{tabularx}
+\par\smallskip
+{\footnotesize\raggedright
+REFs for a label $L_b$ and an arc $(i,j)$, where $i$ is the pickup node of request $k$.\par}
+\end{table}
 
 
+\begin{table}[!ht]
+\caption{Feasibility conditions of the backward REFs}
+\label{tab:backward-feasibility}
+\footnotesize
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{6pt}
+\begin{tabularx}{\linewidth}{@{}l l X@{}}
+\toprule
+REF & Condition & Expression \\
+\midrule
 
-\end{landscape}
+\multirow{3}{*}{$g^{\mathrm{end}}$}
+& Terminal & $j = \bar 0$ \\
+& Capacity & $q_k \leq Q$ \\
+\midrule
+
+\multirow{5}{*}{$g^{\mathrm{extend}}$}
+& Non-terminal & $j \neq \bar 0$ \\
+& Elementarity & $k \notin S_b \cup O_b$ \\
+& Destination & $d_i = d_j$ \\
+& Capacity & $L_b + q_k \leq Q$ \\
+\midrule
+
+\multirow{4}{*}{$g^{\mathrm{switch}}$}
+& Non-terminal & $j \neq \bar 0$ \\
+& Elementarity & $k \notin S_b \cup O_b$ \\
+& Capacity & $q_k \leq Q$ \\
+\midrule
+
+$g^{\mathrm{start}}$
+& Non-terminal & $j \neq \bar 0$ \\
+
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\newpage
 
 
 
