@@ -366,15 +366,17 @@ remains a consequence of the pickup and not an isolated event). The open request
 earliest-due-date first (EDD) order. The set of open requests $O_f$ (the current batch) is deliverable if every 
 request is completed by its deadline. 
 
-NOTE: It is possible to structure decisions in such a way that one only needs to decide what to do at 
-pickup nodes. E.g., at a given pickup node, one can decide to first deliver open requests and proceed to 
-a new pickup, or decide to go to a new pickup without delivering first, or delivering and then closing the route. 
-By eliminating delivery labels, we can decrease the size of our labeling algorithm.
-
 \paragraph{Initial label}
 Each route starts at an imaginary origin $0$ with $c_{0,\cdot} = t_{0,\cdot} = 0$. 
 The initial label is $L_f^0 = (0, 0, 0, 0, \bot, 0, \emptyset, \emptyset)$. 
 The route ends at an imaginary destination $\bar 0$ with $c_{\cdot,\bar 0} = t_{\cdot,\bar 0} = 0$.
+
+\paragraph{Other Parameters}
+Each request has a single time window, defined by $(a_k, b_k)$ for a given request $k$, as well as a service duration $s_k$, 
+applied both at the pickup and delivery event, and a demand $q_k$. Each vehicle has a homogeneous capacity $Q$.
+
+At the end of a route, a route closure penalty is added for non-loop routes, which is $\rho \cdot c_{d_i,h_f}$, where 
+$\rho$ is the penalty ratio and $c_{d_i,h_f}$ is the cost of the arc going from the final destination to the first pickup (for loop routes, this arc is zero).
 
 \paragraph{Label transitions}
 A label $L_f$ is propagated by one of four REFs, each of which creates a new label $L_f'$:
@@ -405,7 +407,7 @@ $C_f'$
 & $C_f + c_{0,j}$
 & $C_f + c_{i,j}$
 & $C_f + c_{i,d_i} + c_{d_i,j}$
-& $C_f + c_{i,d_i} + \rho\, c_{d_i,h}$ \\
+& $C_f + c_{i,d_i} + \rho\, c_{d_i,h_f}$ \\
 
 $L_f'$
 & $q_k$
@@ -440,8 +442,8 @@ $O_f'$
 $S_f'$
 & $\emptyset$
 & $S_f$
-& $S_f \cup O$
-& $S_f \cup O$ \\
+& $S_f \cup O_f$
+& $S_f \cup O_f$ \\
 
 \bottomrule
 \end{tabularx}
@@ -486,7 +488,7 @@ REF & Condition & Expression \\
 
 \multirow{2}{*}{$f^{\mathrm{end}}$}
 & Non-origin & $i \neq 0$ \\
-& Horizon & $T_f' \leq H_f$ \\
+& Horizon & $T_f' \leq H$ \\
 
 \bottomrule
 \end{tabularx}
@@ -502,11 +504,12 @@ REF & Condition & Expression \\
 
 \paragraph{Labels}
 A backward partial path $(j, \ldots, \bar 0)$ visits pickup nodes only. It is represented by a
-backward label $L_b = (j, C_b, L_b, T_b, h_b, U_b, O_b, S_b)$, with the following attributes: 
+backward label $L_b = (j, C_b, L_b, T_b, \Omega_b, h_b, U_b, O_b, S_b)$, with the following attributes: 
 the first visited pickup node $j$, 
 the accumulated cost $C_b$, 
 the total load $L_b$ of the open requests, 
-the latest start of service $T_b$ at node $j$, 
+the latest start of service $T_b$ at node pickup node $j$, 
+the latest departure time $\Omega_b$ at the destination $d_j$,
 the destination of the last batch $h_b$ (used for closure penalty calculation), 
 the accumulated delivery time $U_b$ of the open requests, 
 the set of open requests $O_b$, and 
@@ -566,9 +569,15 @@ $L_b'$
 
 $T_b'$
 & $b_k - 2 s_k - t_{i,d_i}$
-& ?
-& $ \min\{T_b - t_{d_i,j} - b_k\} - 2 s_k - t_{i,d_i}$
+& $T_b - t_{i,j} - s_k$
+& $ \min\{T_b - t_{d_i,j}, b_k\} - 2 s_k - t_{i,d_i}$
 & $T$ \\
+
+$\Omega_b'$
+& $H$
+& $\Omega_b$
+& $T_b - t_{d_i,j}$
+& $\Omega_b$ \\
 
 $h_b'$
 & $d_i$
@@ -578,7 +587,7 @@ $h_b'$
 
 $U_b'$
 & $s_k$
-& $U_b + d_k$
+& $U_b + s_k$
 & $s_k$
 & $0$ \\
 
